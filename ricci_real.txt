@@ -1,0 +1,12 @@
+00
+\frac{a^{2} \left(2 \Delta^{2} \mu^{2} \sin^{2}{\left(\theta \right)} + 3 \Delta \Sigma^{2} \sin^{2}{\left(\theta \right)} - 2 \Delta \Sigma^{2} - 2 \Delta a^{2} \mu^{2} \sin^{4}{\left(\theta \right)} - 8 \Delta \mu^{2} r^{2} \sin^{2}{\left(\theta \right)} + 8 \Delta \mu^{2} r^{2} - 2 \Sigma^{2} a^{2} \sin^{4}{\left(\theta \right)} + \Sigma^{2} a^{2} \sin^{2}{\left(\theta \right)} + 8 a^{2} \mu^{2} r^{2} \sin^{4}{\left(\theta \right)} - 4 a^{2} \mu^{2} r^{2} \sin^{2}{\left(\theta \right)}\right)}{\Delta \rho^{8}}
+03
+\frac{2 a \mu r \left(- \Delta \Sigma^{2} - 2 \Sigma^{2} a^{2} \cos^{2}{\left(\theta \right)} + \Sigma^{2} a^{2} + 8 a^{2} \mu^{2} r^{2} \cos^{2}{\left(\theta \right)} - 4 a^{2} \mu^{2} r^{2}\right) \sin^{2}{\left(\theta \right)}}{\Delta \rho^{8}}
+11
+\frac{2 a^{2} \mu^{2} \left(- \Delta \Sigma^{2} + \Sigma^{2} a^{2} \sin^{2}{\left(\theta \right)} + 4 a^{2} \mu^{2} r^{2} \sin^{2}{\left(\theta \right)}\right) \sin^{2}{\left(\theta \right)}}{\Delta^{2} \rho^{8}}
+12
+- \frac{4 a^{2} \mu^{2} r \left(2 \Delta \Sigma^{2} - \Sigma^{2} a^{2} \sin^{2}{\left(\theta \right)} + 4 a^{2} \mu^{2} r^{2} \sin^{2}{\left(\theta \right)}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta^{2} \rho^{8}}
+22
+\frac{\Delta^{2} \Sigma^{4} - 4 \Delta \Sigma^{4} a^{2} \sin^{2}{\left(\theta \right)} + \Delta \Sigma^{4} a^{2} + 16 \Delta \Sigma^{2} a^{2} \mu^{2} r^{2} \sin^{2}{\left(\theta \right)} - 4 \Delta \Sigma^{2} a^{2} \mu^{2} r^{2} + 2 \Sigma^{4} a^{4} \sin^{4}{\left(\theta \right)} - 16 \Sigma^{2} a^{4} \mu^{2} r^{2} \sin^{4}{\left(\theta \right)} + 32 a^{4} \mu^{4} r^{4} \sin^{4}{\left(\theta \right)}}{\Delta^{2} \rho^{8}}
+33
+\frac{\Sigma^{2} \left(\Delta \Sigma^{2} - 2 \Delta a^{2} \mu^{2} \sin^{2}{\left(\theta \right)} - 2 \Sigma^{2} a^{2} \sin^{2}{\left(\theta \right)} + \Sigma^{2} a^{2} + 8 a^{2} \mu^{2} r^{2} \sin^{2}{\left(\theta \right)} - 4 a^{2} \mu^{2} r^{2}\right) \sin^{2}{\left(\theta \right)}}{\Delta \rho^{8}}
