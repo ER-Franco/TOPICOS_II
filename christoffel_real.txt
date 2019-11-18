@@ -1,0 +1,64 @@
+%001
+\Gamma^0_{\phantom{0} 0 1} &=\frac{\mu \left(a^{2} + r^{2}\right) \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{4}}\\
+%002
+\Gamma^0_{\phantom{0} 0 2} &=- \frac{a^{2} \mu r \sin{\left(2 \theta \right)}}{\rho^{4}}\\
+%010
+\Gamma^0_{\phantom{0} 1 0} &=\frac{\mu \left(a^{2} + r^{2}\right) \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{4}}\\
+%013
+\Gamma^0_{\phantom{0} 1 3} &=\frac{a \mu \left(\cos{\left(\theta \right)} - 1\right) \left(\cos{\left(\theta \right)} + 1\right) \left(- a^{4} \cos^{2}{\left(\theta \right)} + a^{2} r^{2} \cos^{2}{\left(\theta \right)} + a^{2} r^{2} + 3 r^{4}\right)}{\Delta \rho^{4}}\\
+%020
+\Gamma^0_{\phantom{0} 2 0} &=- \frac{a^{2} \mu r \sin{\left(2 \theta \right)}}{\rho^{4}}\\
+%023
+\Gamma^0_{\phantom{0} 2 3} &=\frac{2 a^{3} \mu r \sin^{3}{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{4}}\\
+%031
+\Gamma^0_{\phantom{0} 3 1} &=\frac{a \mu \left(\cos{\left(\theta \right)} - 1\right) \left(\cos{\left(\theta \right)} + 1\right) \left(- a^{4} \cos^{2}{\left(\theta \right)} + a^{2} r^{2} \cos^{2}{\left(\theta \right)} + a^{2} r^{2} + 3 r^{4}\right)}{\Delta \rho^{4}}\\
+%032
+\Gamma^0_{\phantom{0} 3 2} &=\frac{2 a^{3} \mu r \sin^{3}{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{4}}\\
+%100
+\Gamma^1_{\phantom{1} 0 0} &=\frac{\Delta \mu \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\rho^{6}}\\
+%103
+\Gamma^1_{\phantom{1} 0 3} &=\frac{\Delta a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \sin^{2}{\left(\theta \right)}}{\rho^{6}}\\
+%111
+\Gamma^1_{\phantom{1} 1 1} &=\frac{a^{2} \mu \cos^{2}{\left(\theta \right)} - a^{2} r \cos^{2}{\left(\theta \right)} + a^{2} r - \mu r^{2}}{\Delta \rho^{2}}\\
+%112
+\Gamma^1_{\phantom{1} 1 2} &=- \frac{a^{2} \sin{\left(2 \theta \right)}}{2 \rho^{2}}\\
+%121
+\Gamma^1_{\phantom{1} 2 1} &=- \frac{a^{2} \sin{\left(2 \theta \right)}}{2 \rho^{2}}\\
+%122
+\Gamma^1_{\phantom{1} 2 2} &=- \frac{\Delta r}{\rho^{2}}\\
+%130
+\Gamma^1_{\phantom{1} 3 0} &=\frac{\Delta a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \sin^{2}{\left(\theta \right)}}{\rho^{6}}\\
+%133
+\Gamma^1_{\phantom{1} 3 3} &=\frac{\left(a^{6} \mu \sin^{4}{\left(\theta \right)} - a^{6} \mu \sin^{2}{\left(\theta \right)} - a^{6} r \sin^{4}{\left(\theta \right)} + 2 a^{6} r \sin^{2}{\left(\theta \right)} - a^{6} r + \frac{a^{4} \mu^{2} r \left(1 - \cos{\left(4 \theta \right)}\right)}{4} + 3 a^{4} \mu r^{2} \sin^{4}{\left(\theta \right)} - 4 a^{4} \mu r^{2} \sin^{2}{\left(\theta \right)} + 2 a^{4} \mu r^{2} - a^{4} r^{3} \sin^{4}{\left(\theta \right)} + 4 a^{4} r^{3} \sin^{2}{\left(\theta \right)} - 3 a^{4} r^{3} - 2 a^{2} \mu^{2} r^{3} \sin^{2}{\left(\theta \right)} - 3 a^{2} \mu r^{4} \sin^{2}{\left(\theta \right)} + 4 a^{2} \mu r^{4} + 2 a^{2} r^{5} \sin^{2}{\left(\theta \right)} - 3 a^{2} r^{5} + 2 \mu r^{6} - r^{7}\right) \sin^{2}{\left(\theta \right)}}{\rho^{6}}\\
+%200
+\Gamma^2_{\phantom{2} 0 0} &=- \frac{a^{2} \mu r \sin{\left(2 \theta \right)}}{\rho^{6}}\\
+%203
+\Gamma^2_{\phantom{2} 0 3} &=\frac{a \mu r \left(a^{2} + r^{2}\right) \sin{\left(2 \theta \right)}}{\rho^{6}}\\
+%211
+\Gamma^2_{\phantom{2} 1 1} &=\frac{a^{2} \sin{\left(2 \theta \right)}}{2 \Delta \rho^{2}}\\
+%212
+\Gamma^2_{\phantom{2} 1 2} &=\frac{r}{\rho^{2}}\\
+%221
+\Gamma^2_{\phantom{2} 2 1} &=\frac{r}{\rho^{2}}\\
+%222
+\Gamma^2_{\phantom{2} 2 2} &=- \frac{a^{2} \sin{\left(2 \theta \right)}}{2 \rho^{2}}\\
+%230
+\Gamma^2_{\phantom{2} 3 0} &=\frac{a \mu r \left(a^{2} + r^{2}\right) \sin{\left(2 \theta \right)}}{\rho^{6}}\\
+%233
+\Gamma^2_{\phantom{2} 3 3} &=- \frac{\left(a^{6} \cos^{4}{\left(\theta \right)} - 2 a^{4} \mu r \sin^{4}{\left(\theta \right)} + 4 a^{4} \mu r \sin^{2}{\left(\theta \right)} + a^{4} r^{2} \cos^{4}{\left(\theta \right)} + 2 a^{4} r^{2} \cos^{2}{\left(\theta \right)} + 4 a^{2} \mu r^{3} \sin^{2}{\left(\theta \right)} + 2 a^{2} r^{4} \cos^{2}{\left(\theta \right)} + a^{2} r^{4} + r^{6}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{6}}\\
+%301
+\Gamma^3_{\phantom{3} 0 1} &=\frac{a \mu \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{4}}\\
+%302
+\Gamma^3_{\phantom{3} 0 2} &=- \frac{2 a \mu r}{\rho^{4} \tan{\left(\theta \right)}}\\
+%310
+\Gamma^3_{\phantom{3} 1 0} &=\frac{a \mu \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{4}}\\
+%313
+\Gamma^3_{\phantom{3} 1 3} &=\frac{- a^{4} \mu \cos^{4}{\left(\theta \right)} + a^{4} \mu \cos^{2}{\left(\theta \right)} + a^{4} r \cos^{4}{\left(\theta \right)} - a^{2} \mu r^{2} \cos^{2}{\left(\theta \right)} - a^{2} \mu r^{2} + 2 a^{2} r^{3} \cos^{2}{\left(\theta \right)} - 2 \mu r^{4} + r^{5}}{\Delta \rho^{4}}\\
+%320
+\Gamma^3_{\phantom{3} 2 0} &=- \frac{2 a \mu r}{\rho^{4} \tan{\left(\theta \right)}}\\
+%323
+\Gamma^3_{\phantom{3} 2 3} &=\frac{2 a^{2} \mu r \sin^{2}{\left(\theta \right)} + \rho^{4}}{\rho^{4} \tan{\left(\theta \right)}}\\
+%331
+\Gamma^3_{\phantom{3} 3 1} &=\frac{- a^{4} \mu \cos^{4}{\left(\theta \right)} + a^{4} \mu \cos^{2}{\left(\theta \right)} + a^{4} r \cos^{4}{\left(\theta \right)} - a^{2} \mu r^{2} \cos^{2}{\left(\theta \right)} - a^{2} \mu r^{2} + 2 a^{2} r^{3} \cos^{2}{\left(\theta \right)} - 2 \mu r^{4} + r^{5}}{\Delta \rho^{4}}\\
+%332
+\Gamma^3_{\phantom{3} 3 2} &=\frac{2 a^{2} \mu r \sin^{2}{\left(\theta \right)} + \rho^{4}}{\rho^{4} \tan{\left(\theta \right)}}\\

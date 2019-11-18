@@ -1,0 +1,337 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{autonum}
+\usepackage{tensor}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},   
+	commentstyle=\color{cyan},
+	keywordstyle=\color{purple},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{red},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,         
+	breaklines=true,                 
+	captionpos=b,                    
+	keepspaces=true,                 
+	numbers=left,                    
+	numbersep=5pt,                  
+	showspaces=false,                
+	showstringspaces=false,
+	showtabs=false,                  
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\author{Erwin Renzo Franco Diaz (16130108)}
+\title{Examen Parcial}
+\date{}
+\begin{document}
+\maketitle
+\section{Introduction}
+
+The Kerr metric for a rotating black hole is given in Boyer-Linquist coordinates $(c = 1)$ by
+\begin{equation}
+	ds^2 = \frac{\Delta - a^2\sin^2{\theta}}{\rho^2}dt^2 
+	+ \frac{4\mu ar\sin^2{\theta}}{\rho^2}dt d\theta
+	- \frac{\rho^2}{\Delta}dr^2 
+	- \rho^2 d\theta^2
+	- \frac{\Sigma^2 \sin^2{\theta}}{\rho^2}d\theta^2
+\end{equation}
+where
+\begin{gather}
+	\rho^2 = r^2 + a^2\cos^2\theta \\
+	\Delta = r^2 - 2\mu r + a^2 \\
+	\Sigma^2 = (r^2 + a^2)^2 - a^2\Delta \sin^2\theta.
+\end{gather}
+Written as a matrix
+\begin{equation}\label{bl_metric}
+g_{\mu \nu} = 
+\begin{pmatrix}
+\frac{\Delta - a^2\sin^2 \theta}{\rho^2} & 0 & 0 & \frac{2\mu ar\sin^2 \theta}{\rho^2} \\
+0 & -\frac{\rho^2}{\Delta} & 0 & 0 \\
+0 & 0 & -\rho^2 & 0 \\
+ \frac{2\mu ar\sin^2 \theta}{\rho^2} & 0 & 0 & -\frac{\Sigma^2 \sin^2 \theta}{\rho^2}
+\end{pmatrix}.
+\end{equation}
+
+The complexity of the Kerr metric, means that there is a large amount of algebraic calculations that needs to be done in order to find the Christoffel symbols, Riemann and Ricci tensors, and other related quantities. This difficulty can be eased by using a programming language with symbolic capabilities such as Mathematica or Python. In this work, we decided to use SageMath, which is an open-source mathematics software system based in Python, mainly because it already has  implemented the \emph{Manifolds} package that allows us to do all the calculations necessary in differential geometry, as well as, for its speed \footnote{The main lines of code necessary for each calculation will be presented and explained in the respective section accompanied by the results. The full code written (both in SageMath and Python) can be found at the end as an appendix.}. 
+
+\section{Metric}
+
+The Kerr spacetime is given as a 4-dimensional differential manifold $\mathcal{M}$. Also, a chart $\mathcal{M}_0$ is defined in it.
+\begin{lstlisting}[language = Python]
+	M = Manifold(4, 'M', r'\mathcal{M}');
+	M0 = M.open_subset('M0', r'\mathcal{M}_0')
+	
+\end{lstlisting}
+In $\mathcal{M}_0$, we introduce the Boyer-Linquist coordinates and the metric $g$, whose components in these coordinates are given by \ref{bl_metric}.
+\begin{lstlisting}[language = Python]
+	#BL = Boyer-Lindquist
+	BL.<t,r,th,ph> = M0.chart(r't r:(0,+oo) th:(0,pi):\theta ph:(0,2*pi):\phi')
+	g = M.lorentzian_metric('g')
+\end{lstlisting}
+
+
+\section{Christoffel Symbols}
+The Christoffel symbols (or connection) are then calculated with the use of the \verb|connection| method applied on the metric. 
+\begin{lstlisting}
+	nab = g.connection()
+\end{lstlisting}
+
+The non-zero components of the Christoffel  symbols $\Gamma^\alpha_{\phantom{\alpha}\beta\gamma}$ of the Kerr metric in Boyer-Linquist coordinates are
+
+\subsubsection*{$\alpha= 0$}
+\begin{align}
+	%001
+	\Gamma^0_{\phantom{0} 0 1} &=\frac{\mu \left(a^{2} + r^{2}\right) \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{4}}\\
+	%002
+	\Gamma^0_{\phantom{0} 0 2} &=- \frac{a^{2} \mu r \sin{\left(2 \theta \right)}}{\rho^{4}}\\
+	%013
+	\Gamma^0_{\phantom{0} 1 3} &= - \frac{a \mu \sin^{2}{\left(\theta \right)} \left(- a^{4} \cos^{2}{\left(\theta \right)} + a^{2} r^{2} \cos^{2}{\left(\theta \right)} + a^{2} r^{2} + 3 r^{4}\right)}{\Delta \rho^{4}}\\
+	%023
+	\Gamma^0_{\phantom{0} 2 3} &=\frac{2 a^{3} \mu r \sin^{3}{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{4}}\\
+\end{align}
+
+\subsubsection*{$\alpha= 1$}
+\begin{align} 
+	%100
+	\Gamma^1_{\phantom{1} 0 0} &=\frac{\Delta \mu \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\rho^{6}}\\
+	%103
+	\Gamma^1_{\phantom{1} 0 3} &=\frac{\Delta a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \sin^{2}{\left(\theta \right)}}{\rho^{6}}\\
+	%111
+	\Gamma^1_{\phantom{1} 1 1} &=\frac{a^{2} \mu \cos^{2}{\left(\theta \right)} - a^{2} r \cos^{2}{\left(\theta \right)} + a^{2} r - \mu r^{2}}{\Delta \rho^{2}}\\
+	%112
+	\Gamma^1_{\phantom{1} 1 2} &=- \frac{a^{2} \sin{\left(2 \theta \right)}}{2 \rho^{2}}\\
+	%122
+	\Gamma^1_{\phantom{1} 2 2} &=- \frac{\Delta r}{\rho^{2}}\\
+	%133
+	\Gamma^1_{\phantom{1} 3 3} &= \frac{\sin^{2}{\left(\theta \right)}}{\rho^{6}}
+	\left(\splitfrac{a^{6} \mu \sin^{4}{\left(\theta \right)} - a^{6} \mu \sin^{2}{\left(\theta \right)} - a^{6} r \sin^{4}{\left(\theta \right)} + 2 a^{6} r \sin^{2}{\left(\theta \right)} - a^{6} r }{\splitdfrac{+ \frac{a^{4} \mu^{2} r \left(1 - \cos{\left(4 \theta \right)}\right)}{4} + 3 a^{4} \mu r^{2} \sin^{4}{\left(\theta \right)} - 4 a^{4} \mu r^{2} \sin^{2}{\left(\theta \right)} + 2 a^{4} \mu r^{2}  }{\splitdfrac{- a^{4} r^{3} \sin^{4}{\left(\theta \right)} + 4 a^{4} r^{3} \sin^{2}{\left(\theta \right)}- 3 a^{4} r^{3}-2 a^{2} \mu^{2} r^{3} \sin^{2}{\left(\theta \right)} }{- 3 a^{2} \mu r^{4} \sin^{2}{\left(\theta \right)} + 4 a^{2} \mu r^{4} + 2 a^{2} r^{5} \sin^{2}{\left(\theta \right)} - 3 a^{2} r^{5} + 2 \mu r^{6} - r^{7}} }} \right) \\
+\end{align}
+
+\subsubsection*{$\alpha = 2$}
+\begin{align}
+	%200
+	\Gamma^2_{\phantom{2} 0 0} &=- \frac{a^{2} \mu r \sin{\left(2 \theta \right)}}{\rho^{6}}\\
+	%203
+	\Gamma^2_{\phantom{2} 0 3} &=\frac{a \mu r \left(a^{2} + r^{2}\right) \sin{\left(2 \theta \right)}}{\rho^{6}}\\
+	%211
+	\Gamma^2_{\phantom{2} 1 1} &=\frac{a^{2} \sin{\left(2 \theta \right)}}{2 \Delta \rho^{2}}\\
+	%212
+	\Gamma^2_{\phantom{2} 1 2} &=\frac{r}{\rho^{2}}\\
+	%222
+	\Gamma^2_{\phantom{2} 2 2} &=- \frac{a^{2} \sin{\left(2 \theta \right)}}{2 \rho^{2}}\\
+	%233
+	\Gamma^2_{\phantom{2} 3 3} &=- \frac{\sin{\left(\theta \right)} \cos{(\theta)}}{\rho^{6}}\left(\splitfrac{a^{6} \cos^{4}{\left(\theta \right)} - 2 a^{4} \mu r \sin^{4}{\left(\theta \right)} + 4 a^{4} \mu r \sin^{2}{\left(\theta \right)} + a^{4} r^{2} \cos^{4}{\left(\theta \right)} }{+ 2 a^{4} r^{2} \cos^{2}{\left(\theta \right)} + 4 a^{2} \mu r^{3} \sin^{2}{\left(\theta \right)} + 2 a^{2} r^{4} \cos^{2}{\left(\theta \right)} + a^{2} r^{4} + r^{6} } \right)\\
+\end{align}
+	
+\subsubsection*{$\alpha = 3$}
+\begin{align}
+	%301
+	\Gamma^3_{\phantom{3} 0 1} &=\frac{a \mu \left(- a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{4}}\\
+	%302
+	\Gamma^3_{\phantom{3} 0 2} &=- \frac{2 a \mu r}{\rho^{4} \tan{\left(\theta \right)}}\\
+	%313
+	\Gamma^3_{\phantom{3} 1 3} &=\frac{- a^{4} \mu \cos^{4}{\left(\theta \right)} + a^{4} \mu \cos^{2}{\left(\theta \right)} + a^{4} r \cos^{4}{\left(\theta \right)} - a^{2} \mu r^{2} \cos^{2}{\left(\theta \right)} - a^{2} \mu r^{2} + 2 a^{2} r^{3} \cos^{2}{\left(\theta \right)} - 2 \mu r^{4} + r^{5}}{\Delta \rho^{4}}\\
+	%323
+	\Gamma^3_{\phantom{3} 2 3} &=\frac{2 a^{2} \mu r \sin^{2}{\left(\theta \right)} + \rho^{4}}{\rho^{4} \tan{\left(\theta \right)}}\\
+\end{align}
+
+The validity of these Christoffel symbols can be checked by making $a = 0$, which should recover then the expressions for the Schwarzchild metric.
+
+  
+
+\section{Riemann Tensor}
+
+In a similar manner, the Riemann tensor for the Kerr metric can be found by using the \texttt{riemann()} method on the metric.
+\begin{lstlisting}[language = Python]
+	R = g.riemann()
+\end{lstlisting}
+
+The non-zero components of the Riemman tensor $R^\alpha_{\phantom{\alpha}\beta \gamma \sigma}$ of the Kerr metric in Boyer-Linquist coordinates are
+
+
+\subsubsection*{$\alpha = 0$}
+\begin{align}
+	%0003
+	R^0_{\phantom{0} 0 0 3} &=\frac{2 a \mu^{2} r^{2} \left(- 3 a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right) \sin^{2}{\left(\theta \right)}}{\rho^{8}}\\
+	%0012
+	R^0_{\phantom{0} 0 1 2} &=\frac{2 a^{2} \mu^{2} r \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta \rho^{6}}\\
+	%0101
+	R^0_{\phantom{0} 1 0 1} &=- \frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(a^{2} \sin^{2}{\left(\theta \right)} + 2 a^{2} + 2 r^{2}\right)}{\Delta \rho^{6}}\\
+	%0102
+	R^0_{\phantom{0} 1 0 2} &=\frac{a^{2} \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(3 a^{2} - 2 \mu r + 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta \rho^{6}}\\
+	%0113
+	R^0_{\phantom{0} 1 1 3} &=\frac{3 a \mu r \left(a^{2} + r^{2}\right) \left(- 3 a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right) \sin^{2}{\left(\theta \right)}}{\Delta \rho^{6}}\\
+	%0123
+	R^0_{\phantom{0} 1 2 3} &=- \frac{a \mu\sin{\left(\theta \right)} \cos{(\theta)}}{\Delta \rho^{6}}
+	\left( \splitfrac{a^{6} \sin^{4}{\left(\theta \right)} + a^{6} \sin^{2}{\left(\theta \right)} - 2 a^{6} - \frac{a^{4} \mu r \left(\cos{\left(4 \theta \right)} - 1\right)}{4} }{\splitfrac{a^{4} r^{2} \sin^{4}{\left(\theta \right)} + 6 a^{4} r^{2} \sin^{2}{\left(\theta \right)} + 2 a^{4} r^{2}- 6 a^{2} \mu r^{3} \sin^{2}{\left(\theta \right)}}{+ 5 a^{2} r^{4} \sin^{2}{\left(\theta \right)} + 10 a^{2} r^{4} + 6 r^{6}} }\right)\\
+	%0201
+	R^0_{\phantom{0} 2 0 1} &=\frac{a^{2} \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(3 a^{2} - 4 \mu r + 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta \rho^{6}}\\
+	%0202
+	R^0_{\phantom{0} 2 0 2} &=\frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(2 a^{2} \sin^{2}{\left(\theta \right)} + a^{2} + r^{2}\right)}{\rho^{6}}\\
+	%0213
+	R^0_{\phantom{0} 2 1 3} &=- \frac{a \mu\sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta \rho^{6}}
+	\left(\splitfrac{2 a^{6} \sin^{4}{\left(\theta \right)} - a^{6} \sin^{2}{\left(\theta \right)} - a^{6} - \frac{a^{4} \mu r \left(\cos{\left(4 \theta \right)} - 1\right)}{2} }{\splitfrac{+ 2 a^{4} r^{2} \sin^{4}{\left(\theta \right)} + 6 a^{4} r^{2} \sin^{2}{\left(\theta \right)} + a^{4} r^{2} - 12 a^{2} \mu r^{3} \sin^{2}{\left(\theta \right)} }{+ 7 a^{2} r^{4} \sin^{2}{\left(\theta \right)} + 5 a^{2} r^{4} + 3 r^{6}}}\right)\\
+	%0223
+	R^0_{\phantom{0} 2 2 3} &=- \frac{3 a \mu r \left(a^{2} + r^{2}\right) \left(3 a^{2} \sin^{2}{\left(\theta \right)} - 3 a^{2} + r^{2}\right) \sin^{2}{\left(\theta \right)}}{\rho^{6}}\\
+	%0303
+	R^0_{\phantom{0} 3 0 3} &=\frac{\mu r}{\rho^{8}} 
+	\left(\splitfrac{- 3 a^{6} \cos^{6}{\left(\theta \right)} + 3 a^{6} \cos^{4}{\left(\theta \right)} - 6 a^{4} \mu r \sin^{6}{\left(\theta \right)} + 6 a^{4} \mu r \sin^{4}{\left(\theta \right)}}{\splitfrac{ - 3 a^{4} r^{2} \cos^{6}{\left(\theta \right)} + a^{4} r^{2} \cos^{4}{\left(\theta \right)} + 2 a^{4} r^{2} \cos^{2}{\left(\theta \right)} - 2 a^{2} \mu r^{3} \sin^{4}{\left(\theta \right)}}{ - 2 a^{2} r^{4} \cos^{4}{\left(\theta \right)} + 3 a^{2} r^{4} \cos^{2}{\left(\theta \right)} - a^{2} r^{4} + r^{6} \cos^{2}{\left(\theta \right)} - r^{6}}}\right)\\
+	%0312
+	R^0_{\phantom{0} 3 1 2} &= \frac{a\mu\sin{\left(\theta\right)} \cos{\left(\theta \right)}}{\Delta \rho^6}
+	\left(\splitdfrac{- a^{6} \cos^{4}{\left(\theta \right)} + 2 a^{4} \mu r \sin^{4}{\left(\theta \right)} - 2 a^{4} \mu r \sin^{2}{\left(\theta \right)} - a^{4} r^{2} \cos^{4}{\left(\theta \right)} }{ + 2 a^{4} r^{2} \cos^{2}{\left(\theta \right)}+ 6 a^{2} \mu r^{3} \sin^{2}{\left(\theta \right)} + 2 a^{2} r^{4} \cos^{2}{\left(\theta \right)} + 3 a^{2} r^{4} + 3 r^{6}} \right)\\
+\end{align}
+
+\subsubsection*{$\alpha = 1$}
+\begin{align}
+%1001
+R^1_{\phantom{1} 0 0 1} &=\frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 a^{2} + 4 \mu r - 2 r^{2}\right)}{\rho^{8}}\\
+%1002
+R^1_{\phantom{1} 0 0 2} &=\frac{3 \Delta a^{2} \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+%1013
+R^1_{\phantom{1} 0 1 3} &=\frac{a \mu r \left(- 9 a^{4} \cos^{2}{\left(\theta \right)} + 12 a^{2} \mu r \cos^{2}{\left(\theta \right)} - 9 a^{2} r^{2} \cos^{2}{\left(\theta \right)} + 3 a^{2} r^{2} - 4 \mu r^{3} + 3 r^{4}\right) \sin^{2}{\left(\theta \right)}}{\rho^{8}}\\
+%1023
+R^1_{\phantom{1} 0 2 3} &=\frac{\Delta a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(a^{2} \sin^{2}{\left(\theta \right)} + 2 a^{2} + 2 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+%1203
+R^1_{\phantom{1} 2 0 3} &=\frac{\Delta a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{6}}\\
+%1212
+R^1_{\phantom{1} 2 1 2} &=\frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right)}{\rho^{4}}\\
+%1301
+R^1_{\phantom{1} 3 0 1} &=\frac{a \mu r \left(9 a^{4} \cos^{2}{\left(\theta \right)} - 12 a^{2} \mu r \cos^{2}{\left(\theta \right)} + 9 a^{2} r^{2} \cos^{2}{\left(\theta \right)} - 3 a^{2} r^{2} + 4 \mu r^{3} - 3 r^{4}\right) \sin^{2}{\left(\theta \right)}}{\rho^{8}}\\
+%1302
+R^1_{\phantom{1} 3 0 2} &=- \frac{\Delta a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(2 a^{2} \sin^{2}{\left(\theta \right)} + a^{2} + r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+%1313
+R^1_{\phantom{1} 3 1 3} &=\frac{\mu r \sin^{2}{\left(\theta \right)}}{\rho^{8}} \left( \splitfrac{- 6 a^{6} \sin^{4}{\left(\theta \right)} + 3 a^{6} \sin^{2}{\left(\theta \right)} + 3 a^{6} + \frac{3 a^{4} \mu r \left(\cos{\left(4 \theta \right)} - 1\right)}{2}}{\splitdfrac{- 6 a^{4} r^{2} \sin^{4}{\left(\theta \right)} - 2 a^{4} r^{2} \sin^{2}{\left(\theta \right)} + 5 a^{4} r^{2} }{+ 4 a^{2} \mu r^{3} \sin^{2}{\left(\theta \right)} - 5 a^{2} r^{4} \sin^{2}{\left(\theta \right)} + a^{2} r^{4} - r^{6}} } \right)\\
+%1323
+R^1_{\phantom{1} 3 2 3} &=\frac{3 \Delta a^{2} \mu \left(a^{2} + r^{2}\right) \left(- a^{2} \cos^{2}{\left(\theta \right)} + 3 r^{2}\right) \sin^{3}{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+\end{align}
+
+\subsubsection*{$\alpha = 2$}
+\begin{align}
+%2001
+R^2_{\phantom{2} 0 0 1} &= \frac{3 a^{2} \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+%2002
+R^2_{\phantom{2} 0 0 2} &=\frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(2 a^{2} \sin^{2}{\left(\theta \right)} + a^{2} - 2 \mu r + r^{2}\right)}{\rho^{8}}\\
+%2013
+R^2_{\phantom{2} 0 1 3} &=\frac{a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(2 a^{2} \sin^{2}{\left(\theta \right)} + a^{2} + r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+%2023
+R^2_{\phantom{2} 0 2 3} &=\frac{a \mu r \left(9 a^{4} \cos^{2}{\left(\theta \right)} - 6 a^{2} \mu r \cos^{2}{\left(\theta \right)} + 9 a^{2} r^{2} \cos^{2}{\left(\theta \right)} - 3 a^{2} r^{2} + 2 \mu r^{3} - 3 r^{4}\right) \sin^{2}{\left(\theta \right)}}{\rho^{8}}\\
+%2103
+R^2_{\phantom{2} 1 0 3} &=\frac{a \mu \left(- a^{2} \cos^{2}{\left(\theta \right)} + 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{6}}\\
+%2112 RUSH
+R^2_{\phantom{2} 1 1 2} &=\frac{\mu r \left(- 3 a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{4}}\\
+%2301
+R^2_{\phantom{2} 3 0 1} &=- \frac{a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(a^{2} \sin^{2}{\left(\theta \right)} + 2 a^{2} + 2 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+%2302
+R^2_{\phantom{2} 3 0 2} &=\frac{a \mu r \left(- 9 a^{4} \cos^{2}{\left(\theta \right)} + 6 a^{2} \mu r \cos^{2}{\left(\theta \right)} - 9 a^{2} r^{2} \cos^{2}{\left(\theta \right)} + 3 a^{2} r^{2} - 2 \mu r^{3} + 3 r^{4}\right) \sin^{2}{\left(\theta \right)}}{\rho^{8}}\\
+%2313
+R^2_{\phantom{2} 3 1 3} &=\frac{3 a^{2} \mu \left(a^{2} + r^{2}\right) \left(- a^{2} \cos^{2}{\left(\theta \right)} + 3 r^{2}\right) \sin^{3}{\left(\theta \right)} \cos{\left(\theta \right)}}{\rho^{8}}\\
+%2323
+R^2_{\phantom{2} 3 2 3} &= \frac{\mu r\sin^{2}{\left(\theta \right)}}{\rho^{8}}\left(
+\splitfrac{ 3 a^{6} \sin^{4}{\left(\theta \right)} + 3 a^{6} \sin^{2}{\left(\theta \right)} - 6 a^{6} + \frac{3 a^{4} \mu r \left(1 - \cos{\left(4 \theta \right)}\right)}{4} + 3 a^{4} r^{2} \sin^{4}{\left(\theta \right)}}{ + 10 a^{4} r^{2} \sin^{2}{\left(\theta \right)} - 10 a^{4} r^{2} - 2 a^{2} \mu r^{3} \sin^{2}{\left(\theta \right)} + 7 a^{2} r^{4} \sin^{2}{\left(\theta \right)} - 2 a^{2} r^{4} + 2 r^{6}} \right)\\
+\end{align}
+
+\subsubsection*{$\alpha = 3$}
+\begin{align}
+%3003
+R^3_{\phantom{3} 0 0 3} &=- \frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(2 \mu r - \rho^{2}\right)}{\rho^{8}}\\
+%3012
+R^3_{\phantom{3} 0 1 2} &=\frac{a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(2 \mu r - \rho^{2}\right)}{\Delta \rho^{6} \tan{\left(\theta \right)}}\\
+%3030
+R^3_{\phantom{3} 0 3 0} &=\frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(2 \mu r - \rho^{2}\right)}{\rho^{8}}\\
+%3101
+R^3_{\phantom{3} 1 0 1} &=\frac{3 a \mu r \left(- 3 a^{2} \cos^{2}{\left(\theta \right)} + r^{2}\right)}{\Delta \rho^{6}}\\
+%3102
+R^3_{\phantom{3} 1 0 2} &=\frac{a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(2 a^{2} \sin^{2}{\left(\theta \right)} + a^{2} - 2 \mu r + r^{2}\right)}{\Delta \rho^{6} \tan{\left(\theta \right)}}\\
+%3113
+R^3_{\phantom{3} 1 1 3} &=- \frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(2 a^{2} \sin^{2}{\left(\theta \right)} + a^{2} + r^{2}\right)}{\Delta \rho^{6}}\\
+%3123
+R^3_{\phantom{3} 1 2 3} &=\frac{a^{2} \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(3 a^{2} - 2 \mu r + 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta \rho^{6}}\\
+%3201
+R^3_{\phantom{3} 2 0 1} &=- \frac{a \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 a^{2} + 4 \mu r - 2 r^{2}\right)}{\Delta \rho^{6} \tan{\left(\theta \right)}}\\
+%3202
+R^3_{\phantom{3} 2 0 2} &=\frac{3 a \mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right)}{\rho^{6}}\\
+%3213
+R^3_{\phantom{3} 2 1 3} &=\frac{a^{2} \mu \left(a^{2} \cos^{2}{\left(\theta \right)} - 3 r^{2}\right) \left(3 a^{2} - 4 \mu r + 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta \rho^{6}}\\
+%3223
+R^3_{\phantom{3} 2 2 3} &=\frac{\mu r \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \left(a^{2} \sin^{2}{\left(\theta \right)} + 2 a^{2} + 2 r^{2}\right)}{\rho^{6}}\\
+%3303
+R^3_{\phantom{3} 3 0 3} &=\frac{2 a \mu^{2} r^{2} \left(3 a^{2} \cos^{2}{\left(\theta \right)} - r^{2}\right) \sin^{2}{\left(\theta \right)}}{\rho^{8}}\\
+%3312
+R^3_{\phantom{3} 3 1 2} &=\frac{2 a^{2} \mu^{2} r \left(- a^{2} \cos^{2}{\left(\theta \right)} + 3 r^{2}\right) \sin{\left(\theta \right)} \cos{\left(\theta \right)}}{\Delta \rho^{6}}\\
+\end{align}
+
+Again, by making $a = 0$, the Riemann tensor components for the Schwarzchild metric should be recovered. 
+\section{Ricci Tensor}
+Lastly, the Ricci tensor for the Kerr metric can be found as before by using the \texttt{ricci} method on the metric. 
+\begin{lstlisting}
+	Ric = g.ricci()
+	Ric[:]
+\end{lstlisting}
+The second line show its components $R_{\alpha\beta}$.
+\begin{equation}
+R_{\alpha\beta} = 
+\left(\begin{array}{rrrr}
+	0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0 \\
+	0 & 0 & 0 & 0
+\end{array}\right)
+\end{equation}
+
+The Ricci tensor for the Kerr metric is equal to zero. This is as expected, since the metric is a solution to the vacuum field equation. It also serves as a check for the calculations done in the previous sections.  
+
+\section{Kretshmann Scalar}
+
+The Kretshmann scalar $K$ is defined as the invariant scalar
+
+\begin{equation}
+	K = R^{\alpha\beta\gamma\delta}R_{\alpha\beta\gamma\delta}.
+\end{equation}
+
+In order to calculate this quantity, the fully contravariant and covariant components of the Riemann tensor are needed. These can be found by raising and lowering the indices of the $R^\alpha_{\phantom{\alpha}\beta\gamma\delta}$ components already known. 
+
+First, for the fully contravariant components
+\begin{lstlisting}
+	dR = R.down(g))
+\end{lstlisting}
+and then, for the fully covariant components
+\begin{lstlisting}
+	uR = R.up(g)
+\end{lstlisting}
+
+Finally, the Krestchmann scalar for the Kerr metric is calculated,
+\begin{lstlisting}
+	Kr_scalar = uR['^ijkl']*dR['_ijkl']
+\end{lstlisting}
+which is found to be
+\begin{equation}\label{kresh}
+	K = -\frac{48 \, {\left(\rho^4 -16 a^2 r^2 \cos\left({\theta}\right)^2 \right)} {\left(a^2 \cos\left({\theta}\right)^2 - r^2\right)} {\mu}^{2}}{\rho^{6}}
+\end{equation}
+
+Henry (2000) gives the expression of the Krestchmann scalar for a charged rotating black hole (the most general kind) as
+\begin{equation}\label{henry}
+	K = \frac{8}{(r^2+(a\cos(\theta))^2)^6} \left(\splitdfrac{6u^2(r^6 - 15r^4(a\cos(\theta))^2 + 15r^2(a\cos(\theta))^4 - (a\cos(\theta))^6)}{\splitfrac{- 12uq^2r(r^4 - 10(ar\cos(\theta))^2 + 5(a\cos(\theta))^4)}{ + q^4(7r^4 - 34(ar\cos(\theta))^2 + 7(a\cos(\theta))^4)}}\right).
+\end{equation}
+By making $q= 0$ in \ref{henry}, since the Kerr black hole is not charged, \ref{kresh} is recovered. 
+
+
+\end{document}
